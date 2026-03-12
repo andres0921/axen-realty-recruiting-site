@@ -123,7 +123,7 @@ function Navbar({ navItems, onNavClick, calendlyUrl }) {
           <img
             src="/axen-logo.png"
             alt="AXEN Realty"
-            className="h-16 w-auto transition-opacity duration-300 hover:opacity-80"
+            className="h-10 w-auto transition-opacity duration-300 hover:opacity-80"
           />
         </button>
 
@@ -287,6 +287,14 @@ function WhyAxenSection({ highlights }) {
 }
 
 function CommissionSection({ calendlyUrl }) {
+  const [activePlan, setActivePlan] = useState(null);
+
+  useEffect(() => {
+    const handleScroll = () => setActivePlan(null);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const plans = [
     {
       name: "Growth Plan",
@@ -333,7 +341,14 @@ function CommissionSection({ calendlyUrl }) {
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           {plans.map((plan) => (
-            <HoverPlanCard key={plan.name} plan={plan} />
+            <HoverPlanCard
+              key={plan.name}
+              plan={plan}
+              isActive={activePlan === plan.name}
+              onToggle={() =>
+                setActivePlan((prev) => (prev === plan.name ? null : plan.name))
+              }
+            />
           ))}
         </div>
 
@@ -353,18 +368,18 @@ function CommissionSection({ calendlyUrl }) {
   );
 }
 
-function HoverPlanCard({ plan }) {
-  const [isRevealed, setIsRevealed] = useState(false);
+function HoverPlanCard({ plan, isActive, onToggle }) {
+  const [isHovered, setIsHovered] = useState(false);
 
-  const toggleReveal = () => setIsRevealed((prev) => !prev);
+  const isRevealed = isActive || isHovered;
 
   return (
     <div
-      onMouseEnter={() => setIsRevealed(true)}
-      onClick={toggleReveal}
-      onMouseLeave={() => setIsRevealed(false)}
-      onFocus={() => setIsRevealed(true)}
-      onBlur={() => setIsRevealed(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onToggle}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
       tabIndex={0}
       className={`group relative w-full max-w-xs mx-auto aspect-square cursor-pointer overflow-hidden rounded-2xl border p-6 text-center transition-all duration-500 ${
         plan.featured
