@@ -817,7 +817,7 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
           className="flex items-center gap-3"
         >
           <img
-            src="/axen-logo.png"
+            src="axen-realty-horizontal.png"
             alt="AXEN Realty"
             className="h-6 sm:h-7 md:h-8 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100"
           />
