@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export default function AxenRealtyRecruitingPage() {
+  const [showFloatingCta, setShowFloatingCta] = useState(false);
   const trackEvent = (eventName, payload = {}) => {
     const detail = { event: eventName, payload, timestamp: Date.now() };
 
@@ -10,12 +11,22 @@ export default function AxenRealtyRecruitingPage() {
     window.dispatchEvent(new CustomEvent("axen-analytics", { detail }));
     console.log("[AXEN analytics]", detail);
   };
-  const calendlyUrl = "https://calendly.com/homes-andresaviles/is-axen-right-for-you";
+  const calendlyUrl = "https://calendly.com/aaviles-nexalending/is-axen-right-for-you";
 
   const scrollToId = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowFloatingCta(window.scrollY > 320);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
     { label: "Why AXEN", id: "why-axen" },
@@ -117,7 +128,7 @@ export default function AxenRealtyRecruitingPage() {
       </main>
 
       <Footer calendlyUrl={calendlyUrl} onNavClick={scrollToId} trackEvent={trackEvent} />
-      <FloatingCta calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
+      <FloatingCta calendlyUrl={calendlyUrl} trackEvent={trackEvent} isVisible={showFloatingCta} />
     </div>
   );
 }
@@ -794,31 +805,63 @@ function FinalCtaSection({ calendlyUrl, trackEvent }) {
 function Footer({ calendlyUrl, onNavClick, trackEvent }) {
   return (
     <footer className="border-t border-slate-200 bg-white">
+      {/* subtle divider line */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+      </div>
+
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <div>
-          <div className="text-lg font-semibold tracking-[0.2em] text-slate-900">AXEN REALTY</div>
-          <p className="mt-2 text-sm text-slate-500">A brokerage built for agents who want more.</p>
-        </div>
+        {/* clickable logo back to top */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="flex items-center gap-3"
+        >
+          <img
+            src="/axen-logo.png"
+            alt="AXEN Realty"
+            className="h-6 sm:h-7 md:h-8 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100"
+          />
+          <p className="text-sm text-slate-500">A brokerage built for agents who want more.</p>
+        </button>
+
         <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
-          <button onClick={() => {
-            trackEvent("nav_click", { target: "why-axen", location: "footer" });
-            onNavClick("why-axen");
-          }} className="transition hover:text-slate-900">
+          <button
+            onClick={() => {
+              trackEvent("nav_click", { target: "why-axen", location: "footer" });
+              onNavClick("why-axen");
+            }}
+            className="transition hover:text-slate-900"
+          >
             Why AXEN
           </button>
-          <button onClick={() => {
-            trackEvent("nav_click", { target: "commission", location: "footer" });
-            onNavClick("commission");
-          }} className="transition hover:text-slate-900">
+
+          <button
+            onClick={() => {
+              trackEvent("nav_click", { target: "commission", location: "footer" });
+              onNavClick("commission");
+            }}
+            className="transition hover:text-slate-900"
+          >
             Commission
           </button>
-          <button onClick={() => {
-            trackEvent("nav_click", { target: "about", location: "footer" });
-            onNavClick("about");
-          }} className="transition hover:text-slate-900">
+
+          <button
+            onClick={() => {
+              trackEvent("nav_click", { target: "about", location: "footer" });
+              onNavClick("about");
+            }}
+            className="transition hover:text-slate-900"
+          >
             About
           </button>
-          <a href={calendlyUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent("cta_click", { cta: "footer_start_conversation", location: "footer" })} className="font-semibold text-slate-900">
+
+          <a
+            href={calendlyUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "footer_start_conversation", location: "footer" })}
+            className="font-semibold text-slate-900"
+          >
             Start the Conversation
           </a>
         </div>
@@ -827,14 +870,16 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
   );
 }
 
-function FloatingCta({ calendlyUrl, trackEvent }) {
+function FloatingCta({ calendlyUrl, trackEvent, isVisible }) {
   return (
     <a
       href={calendlyUrl}
       target="_blank"
       rel="noreferrer"
       onClick={() => trackEvent("cta_click", { cta: "floating_start_conversation", location: "floating" })}
-      className="fixed bottom-5 right-5 z-50 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl transition hover:-translate-y-0.5"
+      className={`fixed bottom-5 right-5 z-50 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl transition-all duration-500 hover:-translate-y-0.5 ${
+        isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+      }`}
     >
       Level Up With AXEN
     </a>
