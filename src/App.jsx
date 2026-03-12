@@ -262,7 +262,7 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
                       </p>
                     </div>
                     <div className="rounded-2xl bg-white/10 px-4 py-3 text-sm text-slate-200">
-                      Powered by structure inspired by NEXA Lending
+                      Powered by structure inspired | NEXA Lending
                     </div>
                   </div>
                 </div>
