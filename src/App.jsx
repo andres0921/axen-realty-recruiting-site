@@ -10,7 +10,7 @@ export default function AxenRealtyRecruitingPage() {
     window.dispatchEvent(new CustomEvent("axen-analytics", { detail }));
     console.log("[AXEN analytics]", detail);
   };
-  const calendlyUrl = "https://calendly.com/aaviles-nexalending/is-axen-right-for-you";
+  const calendlyUrl = "https://calendly.com/homes-andresaviles/is-axen-right-for-you";
 
   const scrollToId = (id) => {
     const el = document.getElementById(id);
