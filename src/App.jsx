@@ -121,7 +121,7 @@ function Navbar({ navItems, onNavClick, calendlyUrl }) {
           className="flex items-center"
         >
           <img
-            src="/desktop/axen-realty-site/public/axen-logo.png"
+            src="/andresaviles/websites/axen-realty-site/public/axen-logo.png"
             alt="AXEN Realty"
             className="h-10 w-auto transition-opacity duration-300 hover:opacity-80"
           />
