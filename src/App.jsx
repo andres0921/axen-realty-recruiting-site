@@ -182,7 +182,7 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
   const trustPoints = [
     "Two commission plan options",
     "Built with NEXA-inspired support",
-    "Unlimited Growth",
+    "Unlimited Growth and Scalability",
   ];
 
   return (
