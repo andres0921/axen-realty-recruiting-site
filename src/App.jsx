@@ -1,6 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function AxenRealtyRecruitingPage() {
+  const trackEvent = (eventName, payload = {}) => {
+    const detail = { event: eventName, payload, timestamp: Date.now() };
+
+    if (window?.gtag) window.gtag("event", eventName, payload);
+    if (window?.dataLayer) window.dataLayer.push(detail);
+
+    window.dispatchEvent(new CustomEvent("axen-analytics", { detail }));
+    console.log("[AXEN analytics]", detail);
+  };
   const calendlyUrl = "https://calendly.com/aaviles-nexalending/is-axen-right-for-you";
 
   const scrollToId = (id) => {
@@ -91,28 +100,29 @@ export default function AxenRealtyRecruitingPage() {
         navItems={navItems}
         onNavClick={scrollToId}
         calendlyUrl={calendlyUrl}
+        trackEvent={trackEvent}
       />
 
       <main>
-        <HeroSection calendlyUrl={calendlyUrl} onLearnMore={() => scrollToId("why-axen")} />
-        <CredibilitySection />
-        <WhyAxenSection highlights={highlights} />
-        <CommissionSection calendlyUrl={calendlyUrl} />
-        <CalculatorSection calendlyUrl={calendlyUrl} />
-        <ToolsSection tools={tools} />
-        <TestimonialsSection testimonials={testimonials} />
-        <AboutSection />
-        <FitSection items={fitItems} />
-        <FinalCtaSection calendlyUrl={calendlyUrl} />
+        <HeroSection calendlyUrl={calendlyUrl} onLearnMore={() => scrollToId("why-axen")} trackEvent={trackEvent} />
+        <CredibilitySection trackEvent={trackEvent} />
+        <WhyAxenSection highlights={highlights} trackEvent={trackEvent} />
+        <CommissionSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
+        <CalculatorSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
+        <ToolsSection tools={tools} trackEvent={trackEvent} />
+        <TestimonialsSection testimonials={testimonials} trackEvent={trackEvent} />
+        <AboutSection trackEvent={trackEvent} />
+        <FitSection items={fitItems} trackEvent={trackEvent} />
+        <FinalCtaSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
       </main>
 
-      <Footer calendlyUrl={calendlyUrl} onNavClick={scrollToId} />
-      <FloatingCta calendlyUrl={calendlyUrl} />
+      <Footer calendlyUrl={calendlyUrl} onNavClick={scrollToId} trackEvent={trackEvent} />
+      <FloatingCta calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
     </div>
   );
 }
 
-function Navbar({ navItems, onNavClick, calendlyUrl }) {
+function Navbar({ navItems, onNavClick, calendlyUrl, trackEvent }) {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -131,7 +141,10 @@ function Navbar({ navItems, onNavClick, calendlyUrl }) {
           {navItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => onNavClick(item.id)}
+              onClick={() => {
+                trackEvent("nav_click", { target: item.id, location: "header" });
+                onNavClick(item.id);
+              }}
               className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               {item.label}
@@ -143,6 +156,7 @@ function Navbar({ navItems, onNavClick, calendlyUrl }) {
           href={calendlyUrl}
           target="_blank"
           rel="noreferrer"
+          onClick={() => trackEvent("cta_click", { cta: "header_start_conversation", location: "header" })}
           className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
         >
           Start the Conversation
@@ -152,7 +166,8 @@ function Navbar({ navItems, onNavClick, calendlyUrl }) {
   );
 }
 
-function HeroSection({ calendlyUrl, onLearnMore }) {
+function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
+  useSectionView("hero", trackEvent);
   const trustPoints = [
     "Two commission plan options",
     "Built with NEXA-inspired support",
@@ -160,7 +175,7 @@ function HeroSection({ calendlyUrl, onLearnMore }) {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
+    <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent_22%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-24">
         <div>
@@ -181,12 +196,16 @@ function HeroSection({ calendlyUrl, onLearnMore }) {
               href={calendlyUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={() => trackEvent("cta_click", { cta: "hero_start_conversation", location: "hero" })}
               className="rounded-full bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5"
             >
               Start the Conversation
             </a>
             <button
-              onClick={onLearnMore}
+              onClick={() => {
+              trackEvent("cta_click", { cta: "hero_learn_more", location: "hero" });
+              onLearnMore();
+            }}
               className="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               See What Makes AXEN Different
@@ -232,7 +251,7 @@ function HeroSection({ calendlyUrl, onLearnMore }) {
                       </p>
                     </div>
                     <div className="rounded-2xl bg-white/10 px-4 py-3 text-sm text-slate-200">
-                      Powered by structure inspired | NEXA Lending
+                      Powered by structure inspired by NEXA Lending
                     </div>
                   </div>
                 </div>
@@ -245,9 +264,10 @@ function HeroSection({ calendlyUrl, onLearnMore }) {
   );
 }
 
-function CredibilitySection() {
+function CredibilitySection({ trackEvent }) {
+  useSectionView("credibility", trackEvent);
   return (
-    <section className="border-b border-slate-200 bg-slate-50">
+    <section id="credibility" className="border-b border-slate-200 bg-slate-50">
       <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Built for growth</p>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
@@ -262,7 +282,8 @@ function CredibilitySection() {
   );
 }
 
-function WhyAxenSection({ highlights }) {
+function WhyAxenSection({ highlights, trackEvent }) {
+  useSectionView("why-axen", trackEvent);
   return (
     <section id="why-axen" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <div className="max-w-3xl">
@@ -286,14 +307,20 @@ function WhyAxenSection({ highlights }) {
   );
 }
 
-function CommissionSection({ calendlyUrl }) {
+function CommissionSection({ calendlyUrl, trackEvent }) {
+  useSectionView("commission", trackEvent);
   const [activePlan, setActivePlan] = useState(null);
 
   useEffect(() => {
-    const handleScroll = () => setActivePlan(null);
+    const handleScroll = () => {
+      setActivePlan((prev) => {
+        if (prev) trackEvent("commission_card_closed", { reason: "scroll", plan: prev });
+        return null;
+      });
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [trackEvent]);
 
   const plans = [
     {
@@ -339,15 +366,23 @@ function CommissionSection({ calendlyUrl }) {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
           {plans.map((plan) => (
             <HoverPlanCard
               key={plan.name}
               plan={plan}
               isActive={activePlan === plan.name}
               onToggle={() =>
-                setActivePlan((prev) => (prev === plan.name ? null : plan.name))
+                setActivePlan((prev) => {
+                  const next = prev === plan.name ? null : plan.name;
+                  trackEvent(next ? "commission_card_opened" : "commission_card_closed", {
+                    plan: plan.name,
+                    method: "tap",
+                  });
+                  return next;
+                })
               }
+              trackEvent={trackEvent}
             />
           ))}
         </div>
@@ -357,6 +392,7 @@ function CommissionSection({ calendlyUrl }) {
             href={calendlyUrl}
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "commission_start_conversation", location: "commission" })}
             className="inline-flex rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
           >
             Start the Conversation
@@ -368,20 +404,23 @@ function CommissionSection({ calendlyUrl }) {
   );
 }
 
-function HoverPlanCard({ plan, isActive, onToggle }) {
+function HoverPlanCard({ plan, isActive, onToggle, trackEvent }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const isRevealed = isActive || isHovered;
 
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {
+      setIsHovered(true);
+      trackEvent("commission_card_hovered", { plan: plan.name, method: "hover" });
+    }}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onToggle}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
       tabIndex={0}
-      className={`group relative w-full max-w-xs mx-auto aspect-square cursor-pointer overflow-hidden rounded-2xl border p-6 text-center transition-all duration-500 ${
+      className={`group relative w-full max-w-xs md:max-w-sm lg:max-w-md mx-auto aspect-square cursor-pointer overflow-hidden rounded-2xl border p-6 text-center transition-all duration-500 ${
         plan.featured
           ? "border-slate-900 bg-slate-900 text-white"
           : "border-slate-200 bg-slate-100 text-slate-900"
@@ -413,7 +452,7 @@ function HoverPlanCard({ plan, isActive, onToggle }) {
         }`}
       >
         <div>
-          <h3 className="text-xl font-semibold tracking-wide">{plan.name}</h3>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-wide">{plan.name}</h3>
           {plan.featured && (
             <p className="mt-2 text-xs uppercase tracking-[0.3em] text-white/60">Premium option</p>
           )}
@@ -426,7 +465,7 @@ function HoverPlanCard({ plan, isActive, onToggle }) {
         }`}
       >
         <div className="text-xs uppercase tracking-[0.3em] opacity-70">Commission</div>
-        <div className="mt-3 text-xl font-semibold">{plan.fee}</div>
+        <div className="mt-3 text-xl md:text-2xl font-semibold">{plan.fee}</div>
         <div className="mt-1 text-xs uppercase tracking-[0.2em] opacity-70">{plan.cap}</div>
 
         <ul className="mt-4 space-y-2 text-sm">
@@ -452,7 +491,9 @@ function HoverPlanCard({ plan, isActive, onToggle }) {
   );
 }
 
-function CalculatorSection({ calendlyUrl }) {
+function CalculatorSection({ calendlyUrl, trackEvent }) {
+  useSectionView("calculator", trackEvent);
+  const calculatorTrackedRef = useRef(false);
   const [transactions, setTransactions] = useState(12);
   const [downlineAgents, setDownlineAgents] = useState(3);
   const [avgTransactions, setAvgTransactions] = useState(8);
@@ -462,6 +503,19 @@ function CalculatorSection({ calendlyUrl }) {
   const growthDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * 125;
   const eliteDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * 250;
 
+  useEffect(() => {
+    if (!calculatorTrackedRef.current) {
+      calculatorTrackedRef.current = true;
+      return;
+    }
+
+    trackEvent("calculator_used", {
+      transactions: Number(transactions) || 0,
+      downlineAgents: Number(downlineAgents) || 0,
+      avgTransactions: Number(avgTransactions) || 0,
+    });
+  }, [transactions, downlineAgents, avgTransactions, trackEvent]);
+
   const currency = (value) =>
     new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -470,7 +524,7 @@ function CalculatorSection({ calendlyUrl }) {
     }).format(value);
 
   return (
-    <section className="py-16 sm:py-20">
+    <section id="calculator" className="py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
           <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
@@ -543,6 +597,7 @@ function CalculatorSection({ calendlyUrl }) {
                   href={calendlyUrl}
                   target="_blank"
                   rel="noreferrer"
+                  onClick={() => trackEvent("cta_click", { cta: "calculator_start_conversation", location: "calculator" })}
                   className="mt-5 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                 >
                   Start the Conversation
@@ -602,9 +657,10 @@ function ResultCard({ title, fee, downline, cap, featured = false, note }) {
   );
 }
 
-function ToolsSection({ tools }) {
+function ToolsSection({ tools, trackEvent }) {
+  useSectionView("tools", trackEvent);
   return (
-    <section className="bg-slate-50 py-20">
+    <section id="tools" className="bg-slate-50 py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Tools and support</p>
@@ -625,11 +681,12 @@ function ToolsSection({ tools }) {
   );
 }
 
-function TestimonialsSection({ testimonials }) {
+function TestimonialsSection({ testimonials, trackEvent }) {
+  useSectionView("testimonials", trackEvent);
   const marqueeItems = [...testimonials, ...testimonials];
 
   return (
-    <section className="py-16 sm:py-20">
+    <section id="testimonials" className="py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Testimonials</p>
@@ -661,7 +718,8 @@ function TestimonialsSection({ testimonials }) {
   );
 }
 
-function AboutSection() {
+function AboutSection({ trackEvent }) {
+  useSectionView("about", trackEvent);
   return (
     <section id="about" className="bg-slate-900 py-20 text-white">
       <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
@@ -678,9 +736,10 @@ function AboutSection() {
   );
 }
 
-function FitSection({ items }) {
+function FitSection({ items, trackEvent }) {
+  useSectionView("fit", trackEvent);
   return (
-    <section className="py-16 sm:py-20">
+    <section id="fit" className="py-16 sm:py-20">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Who AXEN is for</p>
@@ -703,9 +762,10 @@ function FitSection({ items }) {
   );
 }
 
-function FinalCtaSection({ calendlyUrl }) {
+function FinalCtaSection({ calendlyUrl, trackEvent }) {
+  useSectionView("final_cta", trackEvent);
   return (
-    <section className="bg-slate-50 py-20">
+    <section id="final_cta" className="bg-slate-50 py-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-[2rem] bg-slate-900 px-8 py-12 text-center text-white shadow-2xl sm:px-12 sm:py-16">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">Start the conversation</p>
@@ -720,6 +780,7 @@ function FinalCtaSection({ calendlyUrl }) {
             href={calendlyUrl}
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "final_start_conversation", location: "final_cta" })}
             className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5"
           >
             Start the Conversation
@@ -730,7 +791,7 @@ function FinalCtaSection({ calendlyUrl }) {
   );
 }
 
-function Footer({ calendlyUrl, onNavClick }) {
+function Footer({ calendlyUrl, onNavClick, trackEvent }) {
   return (
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
@@ -739,16 +800,25 @@ function Footer({ calendlyUrl, onNavClick }) {
           <p className="mt-2 text-sm text-slate-500">A brokerage built for agents who want more.</p>
         </div>
         <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
-          <button onClick={() => onNavClick("why-axen")} className="transition hover:text-slate-900">
+          <button onClick={() => {
+            trackEvent("nav_click", { target: "why-axen", location: "footer" });
+            onNavClick("why-axen");
+          }} className="transition hover:text-slate-900">
             Why AXEN
           </button>
-          <button onClick={() => onNavClick("commission")} className="transition hover:text-slate-900">
+          <button onClick={() => {
+            trackEvent("nav_click", { target: "commission", location: "footer" });
+            onNavClick("commission");
+          }} className="transition hover:text-slate-900">
             Commission
           </button>
-          <button onClick={() => onNavClick("about")} className="transition hover:text-slate-900">
+          <button onClick={() => {
+            trackEvent("nav_click", { target: "about", location: "footer" });
+            onNavClick("about");
+          }} className="transition hover:text-slate-900">
             About
           </button>
-          <a href={calendlyUrl} target="_blank" rel="noreferrer" className="font-semibold text-slate-900">
+          <a href={calendlyUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent("cta_click", { cta: "footer_start_conversation", location: "footer" })} className="font-semibold text-slate-900">
             Start the Conversation
           </a>
         </div>
@@ -757,15 +827,39 @@ function Footer({ calendlyUrl, onNavClick }) {
   );
 }
 
-function FloatingCta({ calendlyUrl }) {
+function FloatingCta({ calendlyUrl, trackEvent }) {
   return (
     <a
       href={calendlyUrl}
       target="_blank"
       rel="noreferrer"
+      onClick={() => trackEvent("cta_click", { cta: "floating_start_conversation", location: "floating" })}
       className="fixed bottom-5 right-5 z-50 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl transition hover:-translate-y-0.5"
     >
       Level Up With AXEN
     </a>
   );
 }
+
+function useSectionView(sectionName, trackEvent) {
+  useEffect(() => {
+    const element = document.getElementById(sectionName);
+    if (!element || !trackEvent) return undefined;
+
+    let hasTracked = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasTracked) {
+          hasTracked = true;
+          trackEvent("section_view", { section: sectionName });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [sectionName, trackEvent]);
+}
+
