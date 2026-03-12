@@ -123,7 +123,7 @@ function Navbar({ navItems, onNavClick, calendlyUrl }) {
           <img
             src="/axen-logo.png"
             alt="AXEN Realty"
-            className="h-10 w-auto transition-opacity duration-300 hover:opacity-80"
+            className="h-14 w-auto transition-opacity duration-300 hover:opacity-80"
           />
         </button>
 
