@@ -144,7 +144,7 @@ function Navbar({ navItems, onNavClick, calendlyUrl, trackEvent }) {
           <img
             src="/axen-logo.png"
             alt="AXEN Realty"
-            className="h-14 w-auto transition-opacity duration-300 hover:opacity-80"
+            className="h-16 w-auto transition-opacity duration-300 hover:opacity-80"
           />
         </button>
 
@@ -819,7 +819,7 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
           <img
             src="axen-realty-horizontal.png"
             alt="AXEN Realty"
-            className="h-10 sm:h-12 md:h-14 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100"
+            className="h-14 sm:h-16 md:h-20 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100"
           />
           <p className="text-sm text-slate-500">A brokerage built for agents who want more.</p>
         </button>
