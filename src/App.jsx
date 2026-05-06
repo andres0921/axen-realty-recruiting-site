@@ -11,7 +11,7 @@ export default function AxenRealtyRecruitingPage() {
     window.dispatchEvent(new CustomEvent("axen-analytics", { detail }));
     console.log("[AXEN analytics]", detail);
   };
-  const calendlyUrl = "https://calendly.com/aaviles-nexalending/is-axen-right-for-you";
+  const calendlyUrl = "https://calendly.com/andres-axenrealty/30min";
   const followUpSheetUrl = "https://guiltless-garden-fd7.notion.site/358c25b8458780f5a073f0801d83681d?v=358c25b845878077b3c7000c2ad6b362&source=copy_link";
 
   const scrollToId = (id) => {
