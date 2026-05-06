@@ -722,7 +722,7 @@ function FollowUpSheetSection({ followUpSheetUrl, trackEvent }) {
                 onClick={() => trackEvent("download_click", { asset: "notion_follow_up_template", location: "follow_up_sheet_section" })}
                 className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-slate-100"
               >
-                Open the Notion Template
+                Open the Follow-Up System
               </a>
               <p className="text-center text-xs text-slate-400 lg:text-left">
                 Built in Notion • simple daily follow-up system
