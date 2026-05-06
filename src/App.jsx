@@ -11,7 +11,8 @@ export default function AxenRealtyRecruitingPage() {
     window.dispatchEvent(new CustomEvent("axen-analytics", { detail }));
     console.log("[AXEN analytics]", detail);
   };
-  const calendlyUrl = "https://calendly.com/andres-homes/15min";
+  const calendlyUrl = "https://calendly.com/aaviles-nexalending/is-axen-right-for-you";
+  const followUpSheetUrl = "https://guiltless-garden-fd7.notion.site/358c25b8458780f5a073f0801d83681d?v=358c25b845878077b3c7000c2ad6b362&source=copy_link";
 
   const scrollToId = (id) => {
     const el = document.getElementById(id);
@@ -121,6 +122,7 @@ export default function AxenRealtyRecruitingPage() {
         <CommissionSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
         <CalculatorSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
         <ToolsSection tools={tools} trackEvent={trackEvent} />
+        <FollowUpSheetSection followUpSheetUrl={followUpSheetUrl} trackEvent={trackEvent} />
         <TestimonialsSection testimonials={testimonials} trackEvent={trackEvent} />
         <AboutSection trackEvent={trackEvent} />
         <FitSection items={fitItems} trackEvent={trackEvent} />
@@ -144,7 +146,7 @@ function Navbar({ navItems, onNavClick, calendlyUrl, trackEvent }) {
           <img
             src="/axen-logo.png"
             alt="AXEN Realty"
-            className="h-16 w-auto transition-opacity duration-300 hover:opacity-80"
+            className="h-10 w-auto transition-opacity duration-300 hover:opacity-80"
           />
         </button>
 
@@ -182,7 +184,7 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
   const trustPoints = [
     "Two commission plan options",
     "Built with NEXA-inspired support",
-    "Unlimited Growth and Scalability",
+    "Confidential conversation",
   ];
 
   return (
@@ -262,7 +264,7 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
                       </p>
                     </div>
                     <div className="rounded-2xl bg-white/10 px-4 py-3 text-sm text-slate-200">
-                      Powered by structure inspired | NEXA Lending
+                      Powered by structure inspired by NEXA Lending
                     </div>
                   </div>
                 </div>
@@ -692,6 +694,47 @@ function ToolsSection({ tools, trackEvent }) {
   );
 }
 
+function FollowUpSheetSection({ followUpSheetUrl, trackEvent }) {
+  useSectionView("follow-up-sheet", trackEvent);
+
+  return (
+    <section id="follow-up-sheet" className="bg-white py-16 sm:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-950 shadow-2xl">
+          <div className="grid gap-8 p-8 text-white sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center lg:p-12">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                Free agent resource
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Access the Simple Follow-Up System
+              </h2>
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+                A clean, easy-to-use Notion template to help agents track leads, conversations, next follow-up dates, and booked calls.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <a
+                href={followUpSheetUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => trackEvent("download_click", { asset: "notion_follow_up_template", location: "follow_up_sheet_section" })}
+                className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-slate-100"
+              >
+                Open the Notion Template
+              </a>
+              <p className="text-center text-xs text-slate-400 lg:text-left">
+                Built in Notion • simple daily follow-up system
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TestimonialsSection({ testimonials, trackEvent }) {
   useSectionView("testimonials", trackEvent);
   const marqueeItems = [...testimonials, ...testimonials];
@@ -817,9 +860,9 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
           className="flex items-center gap-3"
         >
           <img
-            src="axen-realty-horizontal.png"
+            src="/axen-logo.png"
             alt="AXEN Realty"
-            className="h-14 sm:h-16 md:h-20 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100"
+            className="h-6 sm:h-7 md:h-8 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100"
           />
           <p className="text-sm text-slate-500">A brokerage built for agents who want more.</p>
         </button>
