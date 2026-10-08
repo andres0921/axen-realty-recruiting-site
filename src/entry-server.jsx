@@ -1,16 +1,19 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
-import AxenRealtyRecruitingPage from "./App";
+import { routes, SITE_URL } from "./routes";
 
 /**
- * Used only at build time (see prerender.js) to bake the page's HTML into
- * dist/index.html, so search engines and link previews see the real content
- * without having to run JavaScript first. The browser then hydrates it.
+ * Used only at build time (see prerender.js) to bake each page's HTML, so
+ * search engines and link previews see the real content without running
+ * JavaScript first. The browser then hydrates it (see main.jsx).
  */
-export function render() {
+export { routes, SITE_URL };
+
+export function render(route) {
+  const { Component } = route;
   return renderToString(
     <React.StrictMode>
-      <AxenRealtyRecruitingPage />
+      <Component />
     </React.StrictMode>
   );
 }

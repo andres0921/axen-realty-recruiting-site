@@ -411,6 +411,13 @@ function CommissionSection({ calendlyUrl, trackEvent }) {
             Start the Conversation
           </a>
           <p className="mt-3 text-sm text-slate-500">Not sure which plan fits you best? Let’s talk it through.</p>
+          <a
+            href="/compare"
+            onClick={() => trackEvent("nav_click", { target: "compare", location: "commission" })}
+            className="mt-2 inline-block text-sm font-semibold text-slate-900 underline-offset-4 hover:underline"
+          >
+            See how AXEN compares to eXp, Real, Keller Williams &amp; Fathom →
+          </a>
         </div>
       </div>
     </section>
@@ -897,6 +904,14 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
           >
             About
           </button>
+
+          <a
+            href="/compare"
+            onClick={() => trackEvent("nav_click", { target: "compare", location: "footer" })}
+            className="transition hover:text-slate-900"
+          >
+            Compare Brokerages
+          </a>
 
           <a
             href={calendlyUrl}

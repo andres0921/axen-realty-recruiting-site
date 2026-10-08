@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import AxenRealtyRecruitingPage from "./App";
+import { findRoute } from "./routes";
 import "./index.css";
+
+const { Component } = findRoute(window.location.pathname);
 
 ReactDOM.hydrateRoot(
   document.getElementById("root"),
   <React.StrictMode>
-    <AxenRealtyRecruitingPage />
+    <Component />
   </React.StrictMode>
 );
