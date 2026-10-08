@@ -185,3 +185,26 @@ export const competitors = {
 };
 
 export const competitorList = [competitors.exp, competitors.real, competitors.kw, competitors.fathom];
+
+/**
+ * Yearly fee estimate from an AI-researched fee structure (see api/compare.js).
+ * Unknown (null) values count as $0, so the result can only understate their
+ * cost — the UI says so.
+ */
+export function researchedCost(d, deals, gci) {
+  const pct = (d.splitToBrokeragePercent ?? 0) / 100;
+  const flat = d.flatFeePerDealBeforeCap ?? 0;
+  const cap = d.annualCap ?? Infinity;
+  let paidToCap = 0;
+  let total = (d.monthlyFee ?? 0) * 12 + (d.annualFee ?? 0) + deals * (d.perDealFee ?? 0);
+  for (let i = 0; i < deals; i++) {
+    if (paidToCap < cap) {
+      const s = Math.min(gci * pct + flat, cap - paidToCap);
+      paidToCap += s;
+      total += s;
+    } else {
+      total += d.postCapPerDealFee ?? 0;
+    }
+  }
+  return Math.round(total);
+}

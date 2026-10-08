@@ -2,6 +2,7 @@ import React from "react";
 import { CompareLayout, CtaButton } from "./Layout";
 import { ASOF, axenCost, competitorList } from "./brokerages";
 import { SCENARIO, axenFacts } from "./ComparePage";
+import { AiCompare } from "./AiCompare";
 
 const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -94,6 +95,8 @@ export function CompareHub() {
           ))}
         </div>
       </section>
+
+      <AiCompare />
 
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-semibold tracking-tight">How AXEN's fees work</h2>
