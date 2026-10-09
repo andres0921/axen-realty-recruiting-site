@@ -163,17 +163,34 @@ function Navbar({ navItems, onNavClick, calendlyUrl, trackEvent }) {
               {item.label}
             </button>
           ))}
+          <a
+            href="/compare"
+            onClick={() => trackEvent("nav_click", { target: "compare", location: "header" })}
+            className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
+          >
+            Compare Brokerages
+          </a>
         </nav>
 
-        <a
-          href={calendlyUrl}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => trackEvent("cta_click", { cta: "header_start_conversation", location: "header" })}
-          className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-        >
-          Start the Conversation
-        </a>
+        <div className="flex items-center gap-4">
+          <a
+            href="/compare"
+            onClick={() => trackEvent("nav_click", { target: "compare", location: "header_mobile" })}
+            className="text-sm font-semibold text-slate-700 md:hidden"
+          >
+            Compare
+          </a>
+          <a
+            href={calendlyUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "header_start_conversation", location: "header" })}
+            className="whitespace-nowrap rounded-full bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 sm:px-5"
+          >
+            <span className="sm:hidden">Let&apos;s Talk</span>
+            <span className="hidden sm:inline">Start the Conversation</span>
+          </a>
+        </div>
       </div>
     </header>
   );
