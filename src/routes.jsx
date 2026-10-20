@@ -2,6 +2,7 @@ import AxenRealtyRecruitingPage from "./App";
 import { CompareHub } from "./compare/CompareHub";
 import { ComparePage, compareFaqs } from "./compare/ComparePage";
 import { ASOF, competitorList } from "./compare/brokerages";
+import { homeFaqs } from "./homeFaqs";
 
 export const SITE_URL = "https://www.levelupwithaxen.com";
 
@@ -22,11 +23,11 @@ export const routes = [
   {
     path: "/",
     file: "index.html",
-    title: "Level Up with AXEN Realty | A Brokerage for Agents Who Want More",
+    title: "AXEN Realty: 100% Commission Brokerage | Level Up with AXEN",
     description:
-      "Thinking about your next brokerage? AXEN Realty offers real estate agents competitive commission plans, real support, powerful systems, and growth opportunities. See the numbers and start a no-pressure conversation with Andres Aviles.",
+      "Thinking about switching brokerages? AXEN Realty agents keep 100% of their commission, pay $50/month with no annual fee, and cap at $6,000. See the numbers and start a confidential, no-pressure conversation with Andres Aviles.",
     ogDescription:
-      "Competitive commission plans, real support, powerful systems, and growth opportunities for real estate agents ready to level up.",
+      "Keep 100% of your commission, $50/month, caps as low as $6,000 — plus your own transaction coordinator and E&O. For agents ready to level up.",
     Component: AxenRealtyRecruitingPage,
     jsonLd: [
       {
@@ -34,10 +35,30 @@ export const routes = [
         "@type": "WebPage",
         "@id": `${SITE_URL}/#webpage`,
         url: `${SITE_URL}/`,
-        name: "Level Up with AXEN Realty | A Brokerage for Agents Who Want More",
+        name: "AXEN Realty: 100% Commission Brokerage | Level Up with AXEN",
         inLanguage: "en-US",
-        about: { "@type": "Organization", name: "AXEN Realty", logo: `${SITE_URL}/axen-logo.png` },
+        about: { "@id": `${SITE_URL}/#organization` },
         author,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}/#organization`,
+        name: "AXEN Realty",
+        url: `${SITE_URL}/`,
+        logo: `${SITE_URL}/axen-logo.png`,
+        image: `${SITE_URL}/og-image.png`,
+        description: "Multi-state real estate brokerage offering agents a 100% commission split with flat fees and an annual cap.",
+        employee: author,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: homeFaqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
       },
     ],
   },

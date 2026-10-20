@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { axen, axenCost } from "./compare/brokerages";
+import { homeFaqs } from "./homeFaqs";
 
 export default function AxenRealtyRecruitingPage() {
   const [showFloatingCta, setShowFloatingCta] = useState(false);
@@ -126,6 +128,7 @@ export default function AxenRealtyRecruitingPage() {
         <TestimonialsSection testimonials={testimonials} trackEvent={trackEvent} />
         <AboutSection trackEvent={trackEvent} />
         <FitSection items={fitItems} trackEvent={trackEvent} />
+        <FaqSection trackEvent={trackEvent} />
         <FinalCtaSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
       </main>
 
@@ -152,16 +155,18 @@ function Navbar({ navItems, onNavClick, calendlyUrl, trackEvent }) {
 
         <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
-            <button
+            <a
               key={item.id}
-              onClick={() => {
+              href={`#${item.id}`}
+              onClick={(e) => {
+                e.preventDefault();
                 trackEvent("nav_click", { target: item.id, location: "header" });
                 onNavClick(item.id);
               }}
               className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               {item.label}
-            </button>
+            </a>
           ))}
           <a
             href="/compare"
@@ -199,8 +204,8 @@ function Navbar({ navItems, onNavClick, calendlyUrl, trackEvent }) {
 function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
   useSectionView("hero", trackEvent);
   const trustPoints = [
-    "Two commission plan options",
-    "Built with NEXA-inspired support",
+    "100% commission from your first deal",
+    `$${axen.monthly}/month, no annual fee`,
     "Confidential conversation",
   ];
 
@@ -216,10 +221,10 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
             For real estate agents exploring better opportunities
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
-            A Brokerage Built for Agents Who Want More
+            A 100% Commission Brokerage for Agents Who Want More
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
-            Competitive commission plans, real support, powerful systems, and growth opportunities for agents ready to level up.
+            Keep your full commission, pay flat fees with a cap as low as ${axen.plans.growth.cap.toLocaleString("en-US")}, and get your own transaction coordinator, E&amp;O, and real support behind you.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <a
@@ -396,6 +401,20 @@ function CommissionSection({ calendlyUrl, trackEvent }) {
           </p>
         </div>
 
+        <dl className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["Commission split", "100% to you, from your first deal"],
+            ["Monthly fee", `$${axen.monthly}, no annual fee`],
+            ["Per-deal fee", `$${axen.perDeal}, includes your own TC and E&O`],
+            ["Plan fee until cap", `$${axen.plans.growth.planFee.toLocaleString("en-US")} or $${axen.plans.elite.planFee.toLocaleString("en-US")} per deal, capped at $${axen.plans.growth.cap.toLocaleString("en-US")} or $${axen.plans.elite.cap.toLocaleString("en-US")}`],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm">
+              <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{label}</dt>
+              <dd className="mt-2 text-base leading-7 text-slate-800">{value}</dd>
+            </div>
+          ))}
+        </dl>
+
         <div className="mt-12 grid gap-4 md:grid-cols-2">
           {plans.map((plan) => (
             <HoverPlanCard
@@ -535,8 +554,9 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
   const [downlineAgents, setDownlineAgents] = useState(3);
   const [avgTransactions, setAvgTransactions] = useState(8);
 
-  const growthFees = Math.min((Number(transactions) || 0) * 500, 6000);
-  const eliteFees = Math.min((Number(transactions) || 0) * 1000, 12000);
+  // Full yearly cost: monthly fee + per-deal fee + plan fee up to the cap.
+  const growthFees = axenCost("growth", Number(transactions) || 0);
+  const eliteFees = axenCost("elite", Number(transactions) || 0);
   const growthDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * 125;
   const eliteDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * 250;
 
@@ -596,7 +616,7 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
               </div>
 
               <p className="mt-8 text-sm text-slate-500">
-                Your comparison updates instantly as you type.
+                Your comparison updates instantly as you type. Yearly fees include the ${axen.monthly} monthly fee, the ${axen.perDeal} per-deal fee, and the plan fee up to its cap.
               </p>
             </div>
 
@@ -680,7 +700,7 @@ function ResultCard({ title, fee, downline, cap, featured = false, note }) {
       </div>
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <div>
-          <p className={`text-sm ${featured ? "text-slate-300" : "text-slate-500"}`}>Estimated transaction fees</p>
+          <p className={`text-sm ${featured ? "text-slate-300" : "text-slate-500"}`}>Estimated yearly fees</p>
           <div className="mt-2 text-2xl font-semibold">{fee}</div>
         </div>
         <div>
@@ -688,7 +708,7 @@ function ResultCard({ title, fee, downline, cap, featured = false, note }) {
           <div className="mt-2 text-2xl font-semibold">{downline}</div>
         </div>
       </div>
-      <p className={`mt-5 text-sm ${featured ? "text-slate-300" : "text-slate-600"}`}>Cap: {cap}</p>
+      <p className={`mt-5 text-sm ${featured ? "text-slate-300" : "text-slate-600"}`}>Plan fee cap: {cap}</p>
       {note && <p className="mt-3 text-sm text-slate-300">{note}</p>}
     </div>
   );
@@ -840,6 +860,37 @@ function FitSection({ items, trackEvent }) {
   );
 }
 
+function FaqSection({ trackEvent }) {
+  useSectionView("faq", trackEvent);
+  return (
+    <section id="faq" className="border-t border-slate-200 py-16 sm:py-20">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Common questions</p>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+          Questions Agents Ask Before Switching Brokerages
+        </h2>
+        <div className="mt-10 divide-y divide-slate-200 rounded-[1.5rem] border border-slate-200 bg-white">
+          {homeFaqs.map((f) => (
+            <details
+              key={f.q}
+              className="group p-6"
+              onToggle={(e) => {
+                if (e.currentTarget.open) trackEvent("faq_opened", { question: f.q });
+              }}
+            >
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-lg font-semibold text-slate-900">
+                <h3 className="text-lg font-semibold">{f.q}</h3>
+                <span className="mt-1 text-slate-400 transition group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p className="mt-4 text-base leading-7 text-slate-600">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCtaSection({ calendlyUrl, trackEvent }) {
   useSectionView("final_cta", trackEvent);
   return (
@@ -892,35 +943,25 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
         </button>
 
         <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
-          <button
-            onClick={() => {
-              trackEvent("nav_click", { target: "why-axen", location: "footer" });
-              onNavClick("why-axen");
-            }}
-            className="transition hover:text-slate-900"
-          >
-            Why AXEN
-          </button>
-
-          <button
-            onClick={() => {
-              trackEvent("nav_click", { target: "commission", location: "footer" });
-              onNavClick("commission");
-            }}
-            className="transition hover:text-slate-900"
-          >
-            Commission
-          </button>
-
-          <button
-            onClick={() => {
-              trackEvent("nav_click", { target: "about", location: "footer" });
-              onNavClick("about");
-            }}
-            className="transition hover:text-slate-900"
-          >
-            About
-          </button>
+          {[
+            ["why-axen", "Why AXEN"],
+            ["commission", "Commission"],
+            ["faq", "FAQ"],
+            ["about", "About"],
+          ].map(([id, label]) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                trackEvent("nav_click", { target: id, location: "footer" });
+                onNavClick(id);
+              }}
+              className="transition hover:text-slate-900"
+            >
+              {label}
+            </a>
+          ))}
 
           <a
             href="/compare"

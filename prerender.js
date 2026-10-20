@@ -24,7 +24,7 @@ const esc = (s) =>
 function head(route) {
   const url = route.path === "/" ? `${SITE_URL}/` : `${SITE_URL}${route.path}`;
   const ogDesc = route.ogDescription ?? route.description;
-  const image = `${SITE_URL}/axen-logo.png`;
+  const image = `${SITE_URL}/og-image.png`;
   const tags = [
     `<title>${esc(route.title)}</title>`,
     `<meta name="description" content="${esc(route.description)}" />`,
@@ -35,7 +35,9 @@ function head(route) {
     `<meta property="og:title" content="${esc(route.title)}" />`,
     `<meta property="og:description" content="${esc(ogDesc)}" />`,
     `<meta property="og:image" content="${image}" />`,
-    `<meta property="og:image:alt" content="AXEN Realty" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="AXEN Realty — 100% commission brokerage" />`,
     `<meta property="og:locale" content="en_US" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${esc(route.title)}" />`,
