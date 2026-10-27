@@ -2,6 +2,19 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "api/compare.js": { "maxDuration": 60 }
-  }
+    "api/compare.js": {
+      "maxDuration": 60
+    }
+  },
+  "headers": [
+    {
+      "source": "/email/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
 }
