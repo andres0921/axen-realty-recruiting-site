@@ -126,7 +126,8 @@ export default function AxenRealtyRecruitingPage() {
         <CalculatorSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
         <ToolsSection tools={tools} trackEvent={trackEvent} />
         <FollowUpSheetSection followUpSheetUrl={followUpSheetUrl} trackEvent={trackEvent} />
-        <TestimonialsSection testimonials={testimonials} trackEvent={trackEvent} />
+        {/* Testimonials are hidden until we have real quotes from named agents. Swap them into `testimonials` above, then restore:
+        <TestimonialsSection testimonials={testimonials} trackEvent={trackEvent} /> */}
         <AboutSection trackEvent={trackEvent} />
         <FitSection items={fitItems} trackEvent={trackEvent} />
         <FaqSection trackEvent={trackEvent} />
