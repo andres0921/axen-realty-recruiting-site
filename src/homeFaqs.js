@@ -14,7 +14,7 @@ export const homeFaqs = [
   },
   {
     q: "What's the difference between the Growth and Elite plans?",
-    a: `Growth has the lower cap (${usd(growth.cap)}) and pays ${usd(growth.revShare)} per transaction for every agent in your downline. Elite has a ${usd(elite.cap)} cap, pays ${usd(elite.revShare)} per downline transaction, and includes invites to exclusive events. Most agents pick based on whether they plan to build a team.`,
+    a: `Growth has the lower cap (${usd(growth.cap)}) and pays ${usd(growth.revShare)} per transaction for every agent in your downline, up to five levels deep. Elite has a ${usd(elite.cap)} cap, pays ${usd(elite.revShare)} per downline transaction, also up to five levels deep, and includes invites to exclusive events. Most agents pick based on whether they plan to build a team.`,
   },
   {
     q: "What's included with AXEN?",

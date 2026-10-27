@@ -15,7 +15,7 @@ export const axenFacts = [
   ["Per-deal fee", "$295 every deal, including your own transaction coordinator and E&O"],
   ["Plan fee until cap", "Growth: $500 per deal, capped at $6,000 · Elite: $1,000 per deal, capped at $12,000"],
   ["Included", "Your own transaction coordinator, E&O, Lofty CRM, and live support"],
-  ["Revenue share", "$125 (Growth) or $250 (Elite) per transaction for every agent in your downline"],
+  ["Revenue share", `$${axen.plans.growth.revShare} (Growth) or $${axen.plans.elite.revShare} (Elite) per transaction for every agent in your downline, up to five levels deep`],
   ["Where", "Multi-state"],
 ];
 

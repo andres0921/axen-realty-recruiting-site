@@ -367,7 +367,7 @@ function CommissionSection({ calendlyUrl, trackEvent }) {
       perks: [
         "Lower transaction fee",
         "Annual cap at $6K",
-        "$125 earned per transaction for every agent in your downline",
+        `$${axen.plans.growth.revShare} per transaction for every agent in your downline, up to five levels deep`,
       ],
       featured: false,
     },
@@ -380,7 +380,7 @@ function CommissionSection({ calendlyUrl, trackEvent }) {
       perks: [
         "Higher transaction fee",
         "Annual cap at $12K",
-        "$250 earned per transaction for every agent in your downline",
+        `$${axen.plans.elite.revShare} per transaction for every agent in your downline, up to five levels deep`,
         "Special invites to exclusive events",
         "Additional growth opportunities and perks",
       ],
@@ -557,8 +557,8 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
   // Full yearly cost: monthly fee + per-deal fee + plan fee up to the cap.
   const growthFees = axenCost("growth", Number(transactions) || 0);
   const eliteFees = axenCost("elite", Number(transactions) || 0);
-  const growthDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * 125;
-  const eliteDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * 250;
+  const growthDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * axen.plans.growth.revShare;
+  const eliteDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * axen.plans.elite.revShare;
 
   useEffect(() => {
     if (!calculatorTrackedRef.current) {
@@ -604,7 +604,7 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
                   onChange={setTransactions}
                 />
                 <NumberInput
-                  label="How many agents are in your downline?"
+                  label="How many agents are in your downline (up to five levels deep)?"
                   value={downlineAgents}
                   onChange={setDownlineAgents}
                 />
@@ -616,7 +616,7 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
               </div>
 
               <p className="mt-8 text-sm text-slate-500">
-                Your comparison updates instantly as you type. Yearly fees include the ${axen.monthly} monthly fee, the ${axen.perDeal} per-deal fee, and the plan fee up to its cap.
+                Your comparison updates instantly as you type. Yearly fees include the ${axen.monthly} monthly fee, the ${axen.perDeal} per-deal fee, and the plan fee up to its cap. Downline earnings depend on what those agents close and aren't guaranteed.
               </p>
             </div>
 

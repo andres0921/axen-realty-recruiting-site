@@ -15,9 +15,10 @@ export const axen = {
   annualFee: 0,
   perDeal: 295, // includes your own transaction coordinator and E&O, every deal
   plans: {
-    growth: { name: "Growth Plan", planFee: 500, cap: 6000, revShare: 125 },
-    elite: { name: "Elite Plan", planFee: 1000, cap: 12000, revShare: 250 },
+    growth: { name: "Growth Plan", planFee: 500, cap: 6000, revShare: 100 },
+    elite: { name: "Elite Plan", planFee: 1000, cap: 12000, revShare: 200 },
   },
+  revShareLevels: 5, // revenue share is paid up to five levels deep
   multiState: true,
 };
 
