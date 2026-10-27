@@ -1,4 +1,5 @@
 import React from "react";
+import LicenseNotice from "../LicenseNotice";
 
 export const CALENDLY_URL = "https://calendly.com/andres-axenrealty/30min";
 
@@ -77,6 +78,7 @@ export function CompareLayout({ crumbs = [], children }) {
             <a href="https://www.andresaviles.com" className="transition hover:text-slate-900">Andres Aviles</a>
           </div>
         </div>
+        <LicenseNotice />
       </footer>
     </div>
   );

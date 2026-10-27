@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { axen, axenCost } from "./compare/brokerages";
+import LicenseNotice from "./LicenseNotice";
 import { homeFaqs } from "./homeFaqs";
 
 export default function AxenRealtyRecruitingPage() {
@@ -982,6 +983,7 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
           </a>
         </div>
       </div>
+      <LicenseNotice />
     </footer>
   );
 }
