@@ -248,19 +248,16 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
             >
               See What Makes AXEN Different
             </button>
-          </div>
-          <p className="mt-4 text-sm text-slate-300">
-            Already made up your mind?{" "}
             <a
               href={JOIN_AXEN_URL}
               target="_blank"
               rel="noreferrer"
               onClick={() => trackEvent("cta_click", { cta: "hero_join_axen", location: "hero" })}
-              className="font-semibold text-white underline underline-offset-4 transition hover:text-slate-200"
+              className="rounded-full border border-white/40 px-6 py-3 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10"
             >
-              Join AXEN through my page
+              Join AXEN
             </a>
-          </p>
+          </div>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {trustPoints.map((point) => (
@@ -682,7 +679,7 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
                   onClick={() => trackEvent("cta_click", { cta: "calculator_join_axen", location: "calculator" })}
                   className="inline-flex rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-900"
                 >
-                  Ready to Join
+                  Join AXEN
                 </a>
                 </div>
               </div>
@@ -1036,15 +1033,15 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
 function FloatingCta({ calendlyUrl, trackEvent, isVisible }) {
   return (
     <a
-      href={calendlyUrl}
+      href={JOIN_AXEN_URL}
       target="_blank"
       rel="noreferrer"
-      onClick={() => trackEvent("cta_click", { cta: "floating_start_conversation", location: "floating" })}
+      onClick={() => trackEvent("cta_click", { cta: "floating_join_axen", location: "floating" })}
       className={`fixed bottom-5 right-5 z-50 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl transition-all duration-500 hover:-translate-y-0.5 ${
         isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >
-      Level Up With AXEN
+      Join AXEN
     </a>
   );
 }
