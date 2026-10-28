@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { axen, axenCost } from "./compare/brokerages";
 import LicenseNotice from "./LicenseNotice";
 import { homeFaqs } from "./homeFaqs";
+import { JOIN_AXEN_URL } from "./links";
 
 export default function AxenRealtyRecruitingPage() {
   const [showFloatingCta, setShowFloatingCta] = useState(false);
@@ -248,6 +249,18 @@ function HeroSection({ calendlyUrl, onLearnMore, trackEvent }) {
               See What Makes AXEN Different
             </button>
           </div>
+          <p className="mt-4 text-sm text-slate-300">
+            Already made up your mind?{" "}
+            <a
+              href={JOIN_AXEN_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackEvent("cta_click", { cta: "hero_join_axen", location: "hero" })}
+              className="font-semibold text-white underline underline-offset-4 transition hover:text-slate-200"
+            >
+              Join AXEN through my page
+            </a>
+          </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {trustPoints.map((point) => (
@@ -652,15 +665,26 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
                 <p className="mt-3 text-base leading-7 text-slate-600">
                   Let’s walk through what makes the most sense for your business.
                 </p>
+                <div className="mt-5 flex flex-wrap gap-3">
                 <a
                   href={calendlyUrl}
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => trackEvent("cta_click", { cta: "calculator_start_conversation", location: "calculator" })}
-                  className="mt-5 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+                  className="inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                 >
                   Start the Conversation
                 </a>
+                <a
+                  href={JOIN_AXEN_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => trackEvent("cta_click", { cta: "calculator_join_axen", location: "calculator" })}
+                  className="inline-flex rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-900"
+                >
+                  Ready to Join
+                </a>
+                </div>
               </div>
             </div>
           </div>
@@ -916,6 +940,16 @@ function FinalCtaSection({ calendlyUrl, trackEvent }) {
           >
             Start the Conversation
           </a>
+          <a
+            href={JOIN_AXEN_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "final_join_axen", location: "final_cta" })}
+            className="mt-4 inline-flex rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10 sm:ml-3"
+          >
+            Join AXEN
+          </a>
+          <p className="mt-4 text-sm text-slate-400">No pressure either way. Talk it through first, or join on your own whenever you&apos;re ready.</p>
         </div>
       </div>
     </section>
@@ -971,6 +1005,16 @@ function Footer({ calendlyUrl, onNavClick, trackEvent }) {
             className="transition hover:text-slate-900"
           >
             Compare Brokerages
+          </a>
+
+          <a
+            href={JOIN_AXEN_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "footer_join_axen", location: "footer" })}
+            className="transition hover:text-slate-900"
+          >
+            Join AXEN
           </a>
 
           <a

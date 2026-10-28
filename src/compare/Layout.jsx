@@ -1,5 +1,6 @@
 import React from "react";
 import LicenseNotice from "../LicenseNotice";
+import { JOIN_AXEN_URL } from "../links";
 
 export const CALENDLY_URL = "https://calendly.com/andres-axenrealty/30min";
 
@@ -42,6 +43,7 @@ export function CompareLayout({ crumbs = [], children }) {
           <nav className="flex items-center gap-5 text-sm font-medium text-slate-600">
             <a href="/" className="hidden transition hover:text-slate-900 sm:inline">Why AXEN</a>
             <a href="/compare" className="transition hover:text-slate-900">Compare</a>
+            <a href={JOIN_AXEN_URL} target="_blank" rel="noreferrer" onClick={() => track("compare_header_join")} className="hidden transition hover:text-slate-900 sm:inline">Join AXEN</a>
             <CtaButton cta="compare_header">Talk to Andres</CtaButton>
           </nav>
         </div>
@@ -75,6 +77,7 @@ export function CompareLayout({ crumbs = [], children }) {
           <div className="flex flex-wrap gap-4">
             <a href="/" className="transition hover:text-slate-900">Why AXEN</a>
             <a href="/compare" className="transition hover:text-slate-900">Compare brokerages</a>
+            <a href={JOIN_AXEN_URL} target="_blank" rel="noreferrer" onClick={() => track("compare_footer_join")} className="transition hover:text-slate-900">Join AXEN</a>
             <a href="https://www.andresaviles.com" className="transition hover:text-slate-900">Andres Aviles</a>
           </div>
         </div>
