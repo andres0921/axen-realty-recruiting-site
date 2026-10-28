@@ -5,16 +5,5 @@
     "api/compare.js": {
       "maxDuration": 60
     }
-  },
-  "headers": [
-    {
-      "source": "/email/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    }
-  ]
+  }
 }
