@@ -130,6 +130,7 @@ export default function AxenRealtyRecruitingPage() {
         {/* Testimonials are hidden until we have real quotes from named agents. Swap them into `testimonials` above, then restore:
         <TestimonialsSection testimonials={testimonials} trackEvent={trackEvent} /> */}
         <AboutSection trackEvent={trackEvent} />
+        <MeetAndresSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
         <FitSection items={fitItems} trackEvent={trackEvent} />
         <FaqSection trackEvent={trackEvent} />
         <FinalCtaSection calendlyUrl={calendlyUrl} trackEvent={trackEvent} />
@@ -852,6 +853,61 @@ function AboutSection({ trackEvent }) {
           AXEN Realty was created to give real estate agents the structure, support, and tools needed to build a long-term business.
           Built with the same support philosophy behind <span className="font-semibold text-white">NEXA Lending</span>, the largest mortgage broker in the world, AXEN focuses on empowering agents with modern systems and real opportunities to grow.
         </p>
+      </div>
+    </section>
+  );
+}
+
+function MeetAndresSection({ calendlyUrl, trackEvent }) {
+  useSectionView("meet_andres", trackEvent);
+  const facts = [
+    "Realtor since 2016",
+    "Loan officer since 2025",
+    "English and Spanish",
+    "Garland, Lavon, and Collin County",
+  ];
+  return (
+    <section id="meet-andres" className="bg-white py-20">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[auto_1fr] lg:items-start lg:px-8">
+        <div className="flex justify-center lg:block">
+          <div className="flex h-36 w-36 items-center justify-center rounded-full bg-slate-900 text-4xl font-semibold tracking-wide text-white ring-8 ring-slate-100">
+            AA
+          </div>
+        </div>
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Meet Andres</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+            The person you'll actually be talking to
+          </h2>
+          <div className="mt-6 space-y-5 text-lg leading-8 text-slate-600">
+            <p>
+              I've been a Realtor in DFW since 2016. In 2025 I added my mortgage license with NEXA Lending, so my clients wouldn't have to bounce between two people when something changed in the middle of a deal. Now I see both sides of every transaction: the contract and the loan.
+            </p>
+            <p>
+              I'm with AXEN because the model makes sense for agents who take their business seriously. You keep your commission, you pay flat fees with a cap, and you have real support behind you. My part is simple. If you're thinking about a change, I'll sit down with your actual numbers, including what you have today, and tell you honestly whether a move makes sense.
+            </p>
+            <p>No pressure either way. Whether that's this month or next year, I'm here.</p>
+          </div>
+          <ul className="mt-8 flex flex-wrap gap-3">
+            {facts.map((f) => (
+              <li key={f} className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700">
+                {f}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-sm text-slate-500">
+            Andres Aviles · Realtor, AXEN Realty · TREC #0680266 · Loan Officer, NEXA Lending · NMLS #2640511
+          </p>
+          <a
+            href={calendlyUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackEvent("cta_click", { cta: "meet_andres_talk", location: "meet_andres" })}
+            className="mt-8 inline-flex rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+          >
+            Talk to Andres
+          </a>
+        </div>
       </div>
     </section>
   );
