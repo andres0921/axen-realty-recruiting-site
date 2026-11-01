@@ -6,7 +6,7 @@
  * publish a number, we say so instead of guessing.
  */
 
-export const ASOF = "October 2026";
+export const ASOF = "November 2026";
 
 export const axen = {
   name: "AXEN Realty",
@@ -152,21 +152,23 @@ export const competitors = {
     slug: "fathom-realty",
     name: "Fathom Realty",
     short: "Fathom",
-    model: "Flat per-deal fee up to a cap (flat-fee plan)",
+    model: "Low split up to a cap (Edge plan), or an uncapped 20% split (Elevate)",
     facts: [
-      ["Flat-fee plan", "$465 per deal until you cap"],
-      ["Annual cap", "$9,000"],
-      ["After cap", "$165 per deal"],
-      ["Annual fee", "$700"],
-      ["High-value fee", "Extra fees on homes priced $600,000 and up"],
-      ["Other plans", "A 12% split plan (cap $12,000) and a 20% split option"],
+      ["Edge plan split", "93/7 until you cap ($350 minimum per sale)"],
+      ["Annual cap", "$9,000 (Edge plan)"],
+      ["After cap", "$165 per sale"],
+      ["Monthly fee", "$75"],
+      ["E&O", "$35 per sale"],
+      ["Annual fee", "None listed (\"No annual membership fees\")"],
+      ["Other plan", "Elevate: 80/20 split with no cap, plus concierge service"],
+      ["Coaching", "Agents with fewer than 4 sales in the last 12 months join Fathom's FUEL coaching program (cost not listed)"],
     ],
-    cost(deals) {
+    cost(deals, gci) {
       let paidToCap = 0;
-      let total = 700;
+      let total = 75 * 12 + deals * 35;
       for (let i = 0; i < deals; i++) {
         if (paidToCap < 9000) {
-          const f = Math.min(465, 9000 - paidToCap);
+          const f = Math.min(Math.max(gci * 0.07, 350), 9000 - paidToCap);
           paidToCap += f;
           total += f;
         } else {
@@ -175,13 +177,14 @@ export const competitors = {
       }
       return total;
     },
-    excludes: "Fathom's flat-fee plan. Excludes high-value property fees.",
+    excludes:
+      "Fathom's Edge plan for residential sales. Excludes leases, commercial deals, and any coaching program cost.",
     sources: [
-      ["Inman — Fathom plans and fees (April 2025)", "https://www.inman.com/2025/04/03/fathom-realty-now-offering-agents-20-commission-split-option/"],
-      ["Fathom Q1 2024 release (annual fee, high-value fee) — SEC", "https://www.sec.gov/Archives/edgar/data/1753162/000110465924059378/tm2413420d2_ex99-1.htm"],
+      ["Fathom Realty Careers: Commission plans", "https://fathomcareers.com/commission-plan/"],
+      ["Fathom Realty Careers: FAQ (Edge and Elevate)", "https://fathomcareers.com/faq/"],
     ],
     pitch:
-      "Fathom and AXEN are the closest on paper: both are flat-fee models where you keep your commission. We'll be straight with you — on fees alone, Fathom's flat-fee plan usually comes out lower. The difference is what you get for the fee: at AXEN, every deal includes your own transaction coordinator and E&O, plus Lofty CRM, live support, and no annual fee. Fathom charges a $700 annual fee and extra fees on homes priced $600,000 and up.",
+      "Fathom and AXEN are close on paper: both keep the brokerage's take small and cap it. We'll be straight with you: on fees alone, Fathom's Edge plan can come out lower for many agents. The difference is what you get for the fee: at AXEN, every deal includes your own transaction coordinator, plus E&O, Lofty CRM, and live support, and the Growth Plan caps at $6,000 instead of $9,000.",
   },
 };
 
