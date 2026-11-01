@@ -25,9 +25,9 @@ export const routes = [
     file: "index.html",
     title: "AXEN Realty: 100% Commission Brokerage | Level Up with AXEN",
     description:
-      "Thinking about switching brokerages? AXEN Realty agents keep 100% of their commission, pay $50/month with no annual fee, and cap at $6,000. See the numbers and start a confidential, no-pressure conversation with Andres Aviles.",
+      "Thinking about switching brokerages? AXEN Realty agents keep 100% of their commission, pay $50/month with no annual fee, and can cap at $6,000. See the numbers.",
     ogDescription:
-      "Keep 100% of your commission, $50/month, caps as low as $6,000 — plus your own transaction coordinator and E&O. For agents ready to level up.",
+      "Keep 100% of your commission, $50/month, caps as low as $6,000, plus your own transaction coordinator and E&O. For agents ready to level up.",
     Component: AxenRealtyRecruitingPage,
     jsonLd: [
       {
@@ -90,7 +90,7 @@ routes.push({
   path: "/compare",
   file: "compare.html",
   title: "Compare Real Estate Brokerages: AXEN vs eXp, Real, KW & Fathom",
-  description: `An honest, side-by-side look at what agents actually pay at AXEN Realty, eXp Realty, Real Brokerage, Keller Williams, and Fathom Realty — splits, caps, and fees as of ${ASOF}.`,
+  description: `What agents actually pay at AXEN Realty, eXp Realty, Real Brokerage, Keller Williams, and Fathom Realty: splits, caps, and fees as of ${ASOF}.`,
   Component: CompareHub,
   jsonLd: [
     webPage("/compare", "Compare Real Estate Brokerages", "Side-by-side brokerage fee comparison for real estate agents."),
@@ -101,7 +101,7 @@ routes.push({
 for (const c of competitorList) {
   const path = `/compare/${c.slug}`;
   const title = `AXEN Realty vs ${c.name}: Fees, Split & Cap Compared (${ASOF.split(" ")[1]})`;
-  const description = `AXEN Realty vs ${c.name} for real estate agents: commission split, cap, monthly and per-deal fees side by side, plus a calculator to run your own numbers. Updated ${ASOF}.`;
+  const description = `AXEN Realty vs ${c.name} for agents: split, cap, monthly and per-deal fees side by side, plus a calculator to run your own numbers. Updated ${ASOF}.`;
   routes.push({
     path,
     file: `compare/${c.slug}.html`,
