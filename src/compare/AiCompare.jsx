@@ -68,7 +68,8 @@ export function AiCompare() {
       setData(j);
       setStatus("done");
       try {
-        window.gtag?.("event", "ai_compare", { brokerage: j.name || brokerage, found: j.found });
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "ai_compare", brokerage: j.name || brokerage, found: j.found });
       } catch {
         /* optional */
       }

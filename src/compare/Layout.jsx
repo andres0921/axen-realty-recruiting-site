@@ -6,8 +6,8 @@ export const CALENDLY_URL = "https://calendly.com/andres-axenrealty/30min";
 
 function track(cta) {
   try {
-    if (window?.gtag) window.gtag("event", "cta_click", { cta });
-    if (window?.dataLayer) window.dataLayer.push({ event: "cta_click", payload: { cta } });
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "cta_click", cta, location: "compare" });
   } catch {
     /* analytics is optional */
   }

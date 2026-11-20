@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { axen, axenCost } from "./compare/brokerages";
 import LicenseNotice from "./LicenseNotice";
 import { homeFaqs } from "./homeFaqs";
@@ -7,15 +7,19 @@ import { sectionForPath } from "./sectionPages";
 
 export default function AxenRealtyRecruitingPage() {
   const [showFloatingCta, setShowFloatingCta] = useState(false);
-  const trackEvent = (eventName, payload = {}) => {
-    const detail = { event: eventName, payload, timestamp: Date.now() };
+  // Stable across renders so effects that depend on it don't re-run (and
+  // re-fire events) every time the page re-renders on scroll. Events go to
+  // Google Tag Manager through dataLayer once, with the payload flattened so
+  // GTM variables can read it directly (e.g. {{dlv - cta}}).
+  const trackEvent = useCallback((eventName, payload = {}) => {
+    const detail = { event: eventName, ...payload };
 
-    if (window?.gtag) window.gtag("event", eventName, payload);
-    if (window?.dataLayer) window.dataLayer.push(detail);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(detail);
 
     window.dispatchEvent(new CustomEvent("axen-analytics", { detail }));
-    console.log("[AXEN analytics]", detail);
-  };
+    if (import.meta.env.DEV) console.log("[AXEN analytics]", detail);
+  }, []);
   const calendlyUrl = "https://calendly.com/andres-axenrealty/30min";
   const followUpSheetUrl = "https://guiltless-garden-fd7.notion.site/358c25b8458780f5a073f0801d83681d?v=358c25b845878077b3c7000c2ad6b362&source=copy_link";
 
@@ -579,7 +583,8 @@ function HoverPlanCard({ plan, isActive, onToggle, trackEvent }) {
 
 function CalculatorSection({ calendlyUrl, trackEvent }) {
   useSectionView("calculator", trackEvent);
-  const calculatorTrackedRef = useRef(false);
+  const calculatorMountedRef = useRef(false);
+  const calculatorReportedRef = useRef(false);
   const [transactions, setTransactions] = useState(12);
   const [downlineAgents, setDownlineAgents] = useState(3);
   const [avgTransactions, setAvgTransactions] = useState(8);
@@ -590,17 +595,24 @@ function CalculatorSection({ calendlyUrl, trackEvent }) {
   const growthDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * axen.plans.growth.revShare;
   const eliteDownline = (Number(downlineAgents) || 0) * (Number(avgTransactions) || 0) * axen.plans.elite.revShare;
 
+  // Report calculator use once per visit, a moment after the visitor stops
+  // typing, with the numbers they landed on. Skips the initial defaults.
   useEffect(() => {
-    if (!calculatorTrackedRef.current) {
-      calculatorTrackedRef.current = true;
-      return;
+    if (!calculatorMountedRef.current) {
+      calculatorMountedRef.current = true;
+      return undefined;
     }
+    if (calculatorReportedRef.current) return undefined;
 
-    trackEvent("calculator_used", {
-      transactions: Number(transactions) || 0,
-      downlineAgents: Number(downlineAgents) || 0,
-      avgTransactions: Number(avgTransactions) || 0,
-    });
+    const timer = setTimeout(() => {
+      calculatorReportedRef.current = true;
+      trackEvent("calculator_used", {
+        transactions: Number(transactions) || 0,
+        downlineAgents: Number(downlineAgents) || 0,
+        avgTransactions: Number(avgTransactions) || 0,
+      });
+    }, 1500);
+    return () => clearTimeout(timer);
   }, [transactions, downlineAgents, avgTransactions, trackEvent]);
 
   const currency = (value) =>
