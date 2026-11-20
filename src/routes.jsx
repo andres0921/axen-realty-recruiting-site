@@ -3,6 +3,7 @@ import { CompareHub } from "./compare/CompareHub";
 import { ComparePage, compareFaqs } from "./compare/ComparePage";
 import { ASOF, competitorList } from "./compare/brokerages";
 import { homeFaqs } from "./homeFaqs";
+import { sectionPages } from "./sectionPages";
 
 export const SITE_URL = "https://www.levelupwithaxen.com";
 
@@ -121,6 +122,19 @@ for (const c of competitorList) {
         })),
       },
     ],
+  });
+}
+
+// Ad sitelink URLs: same page as "/", opened at a section.
+for (const s of sectionPages) {
+  routes.push({
+    path: s.path,
+    file: `${s.path.slice(1)}.html`,
+    title: s.title,
+    description: s.description,
+    canonicalPath: "/",
+    sitemap: false,
+    Component: AxenRealtyRecruitingPage,
   });
 }
 

@@ -22,7 +22,8 @@ const esc = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 
 function head(route) {
-  const url = route.path === "/" ? `${SITE_URL}/` : `${SITE_URL}${route.path}`;
+  const canonicalPath = route.canonicalPath ?? route.path;
+  const url = canonicalPath === "/" ? `${SITE_URL}/` : `${SITE_URL}${canonicalPath}`;
   const ogDesc = route.ogDescription ?? route.description;
   const image = `${SITE_URL}/og-image.png`;
   const tags = [
@@ -62,6 +63,7 @@ for (const route of routes) {
 }
 
 const urls = routes
+  .filter((r) => r.sitemap !== false)
   .map((r) => {
     const loc = r.path === "/" ? `${SITE_URL}/` : `${SITE_URL}${r.path}`;
     return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${r.path === "/" ? "1.0" : "0.8"}</priority>\n  </url>`;
@@ -73,4 +75,4 @@ fs.writeFileSync(
 );
 
 fs.rmSync(ssrDir, { recursive: true, force: true });
-console.log(`prerender: sitemap.xml with ${routes.length} URLs`);
+console.log(`prerender: sitemap.xml with ${routes.filter((r) => r.sitemap !== false).length} URLs`);

@@ -3,6 +3,7 @@ import { axen, axenCost } from "./compare/brokerages";
 import LicenseNotice from "./LicenseNotice";
 import { homeFaqs } from "./homeFaqs";
 import { JOIN_AXEN_URL } from "./links";
+import { sectionForPath } from "./sectionPages";
 
 export default function AxenRealtyRecruitingPage() {
   const [showFloatingCta, setShowFloatingCta] = useState(false);
@@ -22,6 +23,22 @@ export default function AxenRealtyRecruitingPage() {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Sitelink URLs like /commission open the page at that section.
+  useEffect(() => {
+    const section = sectionForPath(window.location.pathname);
+    if (!section) return undefined;
+    const frame = requestAnimationFrame(() => {
+      const el = document.getElementById(section);
+      if (!el) return;
+      const headerHeight = document.querySelector("header")?.offsetHeight || 0;
+      const top = el.getBoundingClientRect().top + window.scrollY - headerHeight;
+      window.scrollTo({ top, behavior: "instant" });
+      trackEvent("landing_section", { section, path: window.location.pathname });
+    });
+    return () => cancelAnimationFrame(frame);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
