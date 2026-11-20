@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { findRoute } from "./routes";
+import { initCalendly } from "./calendly";
 import "./index.css";
 
 const { Component } = findRoute(window.location.pathname);
@@ -11,3 +12,5 @@ ReactDOM.hydrateRoot(
     <Component />
   </React.StrictMode>
 );
+
+initCalendly();
