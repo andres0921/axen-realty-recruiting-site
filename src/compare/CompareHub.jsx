@@ -72,7 +72,7 @@ export function CompareHub() {
         </div>
         <p className="mt-3 text-xs leading-5 text-slate-500">
           Keller Williams assumes an $18,000 market center cap and no extra office fees; your office may differ. Fathom
-          uses its flat-fee plan. Revenue share, stock, and team arrangements aren't included. Each comparison page has a
+          uses its Edge plan. Revenue share, stock, and team arrangements aren't included. Each comparison page has a
           calculator so you can run your own volume.
         </p>
       </section>
